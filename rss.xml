@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>DataInsideLab</title>
+    <link>https://datainsidelab.com/</link>
+    <description>Data, AI, analytics, and technology articles.</description>
+    <language>en</language>
+    <item>
+      <title>What is AI and why is everyone talking about it?</title>
+      <link>https://datainsidelab.com/articles/what-is-ai.html</link>
+      <guid>https://datainsidelab.com/articles/what-is-ai.html</guid>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0530</pubDate>
+      <description>A beginner-friendly explanation of artificial intelligence.</description>
+    </item>
+    <item>
+      <title>What is data analytics?</title>
+      <link>https://datainsidelab.com/articles/what-is-data-analytics.html</link>
+      <guid>https://datainsidelab.com/articles/what-is-data-analytics.html</guid>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0530</pubDate>
+      <description>Understand data analytics with simple examples and common tools.</description>
+    </item>
+    <item>
+      <title>Ecommerce Business Performance Analysis</title>
+      <link>https://datainsidelab.com/projects/ecommerce-business-performance-analysis.html</link>
+      <guid>https://datainsidelab.com/projects/ecommerce-business-performance-analysis.html</guid>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0530</pubDate>
+      <description>A Power BI project case study for ecommerce business performance analysis.</description>
+    </item>
+  </channel>
+</rss>

@@ -1,21 +1,138 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>DataInsideLab</title>
-</head>
-<body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DataInsideLab | Data, AI, and Analytics Explained</title>
+    <meta name="description" content="DataInsideLab publishes practical articles about data, AI, analytics, tools, and the business impact of modern technology.">
+    <meta name="theme-color" content="#0f766e">
+    <meta property="og:title" content="DataInsideLab">
+    <meta property="og:description" content="Clear articles on data, AI, analytics, and technology news.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="/assets/datainsidelab-hero.png">
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="alternate" type="application/rss+xml" title="DataInsideLab RSS" href="/rss.xml">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="DataInsideLab home">
+        <span class="brand-mark">D</span>
+        <span>DataInsideLab</span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="/articles.html">Articles</a>
+        <a href="/projects.html">Projects</a>
+        <a href="#about">About</a>
+      </nav>
+    </header>
 
-    <h1>Welcome to DataInsideLab</h1>
+    <main>
+      <section class="hero">
+        <img class="hero-image" src="/assets/datainsidelab-hero.png" alt="Modern data and AI analytics workspace">
+        <div class="hero-content">
+          <p class="eyebrow">Data, AI, analytics, and tech news</p>
+          <h1>DataInsideLab</h1>
+          <p class="hero-copy">Articles, dashboards, and project notes for people learning data analytics, Power BI, and practical AI.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="/articles.html">Read articles</a>
+            <a class="button secondary" href="/projects.html">View projects</a>
+          </div>
+        </div>
+      </section>
 
-    <p>This is my data analytics portfolio website.</p>
+      <section class="section intro" id="about">
+        <div>
+          <p class="section-kicker">Mission</p>
+          <h2>Make data and AI easier to follow.</h2>
+        </div>
+        <p>DataInsideLab is built for short explainers, practical guides, and project write-ups about data tools, AI trends, analytics careers, and real-world business dashboards. It starts lightweight today and can grow into a monetized blog later with ads, newsletters, and affiliate resources.</p>
+      </section>
 
-    <h2>Projects</h2>
+      <section class="section" id="articles">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Start Here</p>
+            <h2>Featured articles</h2>
+          </div>
+          <a class="text-link" href="/articles.html">All articles</a>
+        </div>
 
-    <ul>
-        <li>Ecommerce Business Performance Analysis</li>
-        <li>SQL Practice</li>
-        <li>Power BI Dashboard</li>
-    </ul>
+        <div class="article-grid">
+          <article class="article-card featured">
+            <p class="tag">Artificial Intelligence</p>
+            <h3><a href="/articles/what-is-ai.html">What is AI and why is everyone talking about it?</a></h3>
+            <p>A beginner-friendly explanation of artificial intelligence, where it is used, and why it matters for students, workers, and businesses.</p>
+            <time datetime="2026-06-02">June 2, 2026</time>
+          </article>
 
-</body>
+          <article class="article-card">
+            <p class="tag">Data Basics</p>
+            <h3><a href="/articles/what-is-data-analytics.html">What is data analytics?</a></h3>
+            <p>Understand data analytics with simple examples, common tools, and the skills needed to begin learning.</p>
+            <time datetime="2026-06-02">June 2, 2026</time>
+          </article>
+
+          <article class="article-card">
+            <p class="tag">Creator Notes</p>
+            <h3><a href="/articles/how-this-site-will-grow.html">How DataInsideLab will grow</a></h3>
+            <p>A public roadmap for building a content site slowly, without expensive hosting or unnecessary services.</p>
+            <time datetime="2026-06-02">June 2, 2026</time>
+          </article>
+        </div>
+      </section>
+
+      <section class="section project-band" id="projects">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Portfolio</p>
+            <h2>Analytics projects</h2>
+          </div>
+          <a class="text-link" href="/projects.html">All projects</a>
+        </div>
+
+        <article class="project-highlight">
+          <div>
+            <p class="tag">Power BI Dashboard</p>
+            <h3><a href="/projects/ecommerce-business-performance-analysis.html">Ecommerce Business Performance Analysis</a></h3>
+            <p>A dashboard project focused on sales performance, customer behavior, product categories, and business insights. This is the right place to explain your GitHub project in a way recruiters and readers can understand.</p>
+          </div>
+          <ul class="metric-list" aria-label="Project highlights">
+            <li><span>Tool</span><strong>Power BI</strong></li>
+            <li><span>Focus</span><strong>Business analysis</strong></li>
+            <li><span>Status</span><strong>Published</strong></li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="section topics" id="topics">
+        <div>
+          <p class="section-kicker">Coverage</p>
+          <h2>Topics to publish</h2>
+        </div>
+        <ul class="topic-list">
+          <li>AI tools and trends</li>
+          <li>Data analytics basics</li>
+          <li>Career and learning guides</li>
+          <li>Dashboards and visualization</li>
+          <li>Power BI project write-ups</li>
+          <li>Data news explained simply</li>
+        </ul>
+      </section>
+
+      <section class="section newsletter" id="newsletter">
+        <div>
+          <p class="section-kicker">Updates</p>
+          <h2>Follow the lab notes.</h2>
+          <p>Newsletter signup can be added later with a free tool. For now, readers can contact you for project feedback, dashboard questions, or article ideas.</p>
+        </div>
+        <a class="button primary" href="mailto:hello@datainsidelab.com">Contact</a>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; 2026 DataInsideLab. All rights reserved.</p>
+      <p>Built for fast, low-cost publishing on Vercel.</p>
+    </footer>
+  </body>
 </html>
