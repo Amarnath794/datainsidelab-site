@@ -53,6 +53,48 @@
           <li>Business Intelligence Reporting</li>
         </ul>
 
+        <h2>DAX measures and KPI calculations</h2>
+
+        <p>
+          The dashboard uses multiple DAX calculations to generate business KPIs, customer insights, revenue metrics, and time intelligence analysis. These measures helped create dynamic and interactive reporting experiences across all report pages.
+        </p>
+
+<pre style="background:#111827;color:#f9fafb;padding:18px;border-radius:12px;overflow:auto;line-height:1.6;margin:24px 0;">
+Total Revenue =
+SUM(order_items[price])
+
+Average Order Value =
+DIVIDE([Total Revenue], [Total Orders])
+
+Total Orders =
+DISTINCTCOUNT(orders[order_id])
+
+Total Customers =
+DISTINCTCOUNT(customers[customer_unique_id])
+
+Monthly Revenue =
+CALCULATE(
+    [Total Revenue],
+    DATESMTD(calendar[date])
+)
+
+Previous Month Revenue =
+CALCULATE(
+    [Total Revenue],
+    DATEADD(calendar[date], -1, MONTH)
+)
+
+Revenue Growth % =
+DIVIDE(
+    [Total Revenue] - [Previous Month Revenue],
+    [Previous Month Revenue]
+)
+</pre>
+
+        <p>
+          Time intelligence calculations were implemented using DAX functions such as CALCULATE, DATEADD, DATESMTD, and DIVIDE to support moving averages, revenue growth analysis, and monthly trend tracking.
+        </p>
+
         <h2>Revenue analysis dashboard</h2>
 
         <img src="/projects/revenue.png" alt="Revenue Analysis Dashboard" style="width:100%;border-radius:12px;margin:24px 0;box-shadow:0 4px 14px rgba(0,0,0,0.12);">
