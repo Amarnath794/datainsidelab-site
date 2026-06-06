@@ -53,46 +53,63 @@
           <li>Business Intelligence Reporting</li>
         </ul>
 
-        <h2>DAX measures and KPI calculations</h2>
+        <h2>Advanced DAX measures and KPI calculations</h2>
 
         <p>
-          The dashboard uses multiple DAX calculations to generate business KPIs, customer insights, revenue metrics, and time intelligence analysis. These measures helped create dynamic and interactive reporting experiences across all report pages.
+          One of the core strengths of this project is the semantic modeling and advanced DAX implementation used to build business KPIs, time intelligence reporting, revenue calculations, and customer analytics.
         </p>
 
 <pre style="background:#111827;color:#f9fafb;padding:18px;border-radius:12px;overflow:auto;line-height:1.6;margin:24px 0;">
 Total Revenue =
 SUM(order_items[price])
 
-Average Order Value =
-DIVIDE([Total Revenue], [Total Orders])
+Completed Orders =
+CALCULATE(
+    DISTINCTCOUNT(orders[order_id]),
+    orders[order_status] = "delivered"
+)
 
-Total Orders =
-DISTINCTCOUNT(orders[order_id])
+AOV_Delivered =
+DIVIDE([Revenue_Delivered], [Completed Orders])
 
-Total Customers =
-DISTINCTCOUNT(customers[customer_unique_id])
+Sales % of Total =
+DIVIDE(
+    [Total Revenue],
+    CALCULATE([Total Revenue], ALL(products))
+)
+
+Revenue MOM Growth % =
+VAR PreviousMonthRevenue =
+    CALCULATE(
+        [Total Revenue],
+        DATEADD(calendar[date], -1, MONTH)
+    )
+RETURN
+DIVIDE(
+    [Total Revenue] - PreviousMonthRevenue,
+    PreviousMonthRevenue
+)
+
+Revenue MoM Safe =
+IF(
+    ISBLANK([Revenue MOM Growth %]),
+    0,
+    [Revenue MOM Growth %]
+)
 
 Monthly Revenue =
 CALCULATE(
     [Total Revenue],
     DATESMTD(calendar[date])
 )
-
-Previous Month Revenue =
-CALCULATE(
-    [Total Revenue],
-    DATEADD(calendar[date], -1, MONTH)
-)
-
-Revenue Growth % =
-DIVIDE(
-    [Total Revenue] - [Previous Month Revenue],
-    [Previous Month Revenue]
-)
 </pre>
 
         <p>
-          Time intelligence calculations were implemented using DAX functions such as CALCULATE, DATEADD, DATESMTD, and DIVIDE to support moving averages, revenue growth analysis, and monthly trend tracking.
+          The dashboard uses advanced DAX functions including CALCULATE, DATEADD, ALL, VAR, RETURN, DIVIDE, ISBLANK, and DISTINCTCOUNT to build scalable analytical measures and dynamic business reporting.
+        </p>
+
+        <p>
+          Time intelligence calculations were implemented to analyze Month-over-Month growth, moving averages, revenue trends, customer behavior, and category contribution analysis.
         </p>
 
         <h2>Revenue analysis dashboard</h2>
@@ -157,7 +174,8 @@ DIVIDE(
           <li>Power BI Dashboard Development</li>
           <li>Data Cleaning and Transformation</li>
           <li>Power Query ETL</li>
-          <li>DAX Calculations</li>
+          <li>Advanced DAX Calculations</li>
+          <li>Time Intelligence Reporting</li>
           <li>Business Intelligence Reporting</li>
           <li>Data Storytelling</li>
           <li>Interactive Dashboard Design</li>
