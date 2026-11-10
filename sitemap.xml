@@ -2,7 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://datainsidelab.com/</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-11-10</lastmod>
+  </url>
+  <url>
+    <loc>https://datainsidelab.com/articles/sql-for-data-analysts-vs-data-engineers.html</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://datainsidelab.com/articles/what-is-ai.html</loc>

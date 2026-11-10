@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SQL for Data Analysts vs Data Engineers | DataInsideLab</title>
+    <meta name="description" content="See how data analysts and data engineers use SQL differently, with practical mid-level examples for a shared revenue problem.">
+    <meta property="og:title" content="SQL for Data Analysts vs Data Engineers">
+    <meta property="og:description" content="The same language, two different jobs: practical SQL examples for analysts and engineers.">
+    <meta property="og:image" content="/assets/sql-analyst-vs-data-engineer-cover.png">
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/article.css">
+    <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "x0rsfiw8zh");
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/"><span class="brand-mark">D</span><span>DataInsideLab</span></a>
+      <nav class="nav" aria-label="Main navigation"><a href="/">Home</a><a href="/articles.html">Articles</a><a href="/projects.html">Projects</a></nav>
+    </header>
+    <main class="article-page">
+      <article>
+        <p class="tag">SQL Fundamentals</p>
+        <h1>SQL for data analysts vs data engineers: the same language, different job</h1>
+        <p class="article-lead">Both roles write SQL, but they are solving different problems. Analysts use SQL to answer business questions. Data engineers use SQL to create the dependable data models that make those answers possible.</p>
+        <p class="article-date"><time datetime="2026-11-10">November 10, 2026</time> · 8 min read</p>
+        <img src="/assets/sql-analyst-vs-data-engineer-cover.png" alt="An illustration comparing analytics dashboards with a data engineering pipeline">
+
+        <h2>One language, two points of view</h2>
+        <p>Imagine an ecommerce company asks, <em>“How did monthly revenue change, and which customer groups drove the change?”</em> An analyst starts with a trusted, ready-to-use table and investigates the result. An engineer works further upstream: they clean incoming order data, remove duplicates, and build the table the analyst can trust.</p>
+        <div class="role-grid">
+          <section class="role-card">
+            <p class="role-label">Data analyst</p>
+            <h3>Turn data into a decision</h3>
+            <p>Writes readable queries against curated tables, explores patterns, validates a number, and communicates what it means to the business.</p>
+          </section>
+          <section class="role-card">
+            <p class="role-label">Data engineer</p>
+            <h3>Turn raw events into trusted data</h3>
+            <p>Builds transformations that are reliable, repeatable, efficient, observable, and safe to run again tomorrow.</p>
+          </section>
+        </div>
+
+        <h2>The difference in a glance</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Question</th><th>Data analyst</th><th>Data engineer</th></tr></thead>
+            <tbody>
+              <tr><td>Primary goal</td><td>Explain what happened and why.</td><td>Deliver clean, usable data reliably.</td></tr>
+              <tr><td>Typical input</td><td>Analytics-ready facts and dimensions.</td><td>Raw application, event, API, or file data.</td></tr>
+              <tr><td>Common SQL</td><td><code>SELECT</code>, joins, aggregates, CTEs, window functions.</td><td><code>MERGE</code>, incremental loads, deduplication, type handling, DDL.</td></tr>
+              <tr><td>Success looks like</td><td>A clear, accurate answer that informs action.</td><td>A trustworthy dataset that arrives on time and can be reused.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>How an analyst writes SQL</h2>
+        <p>An analyst normally begins with business-friendly models such as <code>analytics.fact_orders</code> and <code>analytics.dim_customers</code>. The data is already cleaned and documented. The analyst’s SQL is focused on the question, not on repairing the source system.</p>
+        <p>Here is a mid-level example. It calculates monthly revenue by customer segment, then compares each month with the previous month using the <code>LAG</code> window function.</p>
+        <pre><code>WITH monthly_revenue AS (
+  SELECT
+    DATE_TRUNC(order_date, MONTH) AS order_month,
+    customer_segment,
+    SUM(order_amount) AS revenue,
+    COUNT(DISTINCT order_id) AS orders
+  FROM analytics.fact_orders
+  WHERE order_status = 'completed'
+    AND order_date &gt;= DATE_SUB(CURRENT_DATE(), INTERVAL 12 MONTH)
+  GROUP BY 1, 2
+), with_previous_month AS (
+  SELECT
+    *,
+    LAG(revenue) OVER (
+      PARTITION BY customer_segment
+      ORDER BY order_month
+    ) AS previous_month_revenue
+  FROM monthly_revenue
+)
+SELECT
+  order_month,
+  customer_segment,
+  revenue,
+  orders,
+  ROUND(
+    100 * SAFE_DIVIDE(revenue - previous_month_revenue,
+                      previous_month_revenue),
+    1
+  ) AS month_over_month_growth_pct
+FROM with_previous_month
+ORDER BY order_month DESC, revenue DESC;</code></pre>
+        <p>The output can become a dashboard, a slide, or a recommendation: for example, “Enterprise customers grew 18% month over month, while new-customer revenue declined.” Notice the priorities: clear names, the correct metric definition, and a result another person can review.</p>
+
+        <h2>How an engineer writes SQL</h2>
+        <p>The engineer’s work happens before that analyst query. Suppose order events arrive from an application and can be duplicated, incomplete, or updated after first arriving. The engineer must make a stable <code>fact_orders</code> table that can be run repeatedly without inflating revenue.</p>
+        <p>This BigQuery Standard SQL example first keeps the newest version of every order, standardizes data types, and then incrementally merges the clean records into an analytics table. Exact functions vary slightly across BigQuery, Snowflake, Databricks, and Fabric.</p>
+        <pre><code>MERGE analytics.fact_orders AS target
+USING (
+  WITH ranked_raw_orders AS (
+    SELECT
+      order_id,
+      customer_id,
+      CAST(order_total AS NUMERIC) AS order_amount,
+      DATE(order_created_at) AS order_date,
+      LOWER(TRIM(order_status)) AS order_status,
+      updated_at,
+      ROW_NUMBER() OVER (
+        PARTITION BY order_id
+        ORDER BY updated_at DESC
+      ) AS row_number
+    FROM raw.app_orders
+    WHERE order_id IS NOT NULL
+      AND updated_at &gt;= @last_successful_run
+  )
+  SELECT
+    order_id, customer_id, order_amount, order_date, order_status, updated_at
+  FROM ranked_raw_orders
+  WHERE row_number = 1
+    AND order_amount &gt;= 0
+) AS source
+ON target.order_id = source.order_id
+WHEN MATCHED AND source.updated_at &gt; target.updated_at THEN
+  UPDATE SET
+    customer_id = source.customer_id,
+    order_amount = source.order_amount,
+    order_date = source.order_date,
+    order_status = source.order_status,
+    updated_at = source.updated_at
+WHEN NOT MATCHED THEN
+  INSERT (order_id, customer_id, order_amount, order_date, order_status, updated_at)
+  VALUES (source.order_id, source.customer_id, source.order_amount,
+          source.order_date, source.order_status, source.updated_at);</code></pre>
+        <p>This code is not trying to tell a business story yet. Its job is to protect the story: one current row per order, valid amounts, predictable types, and a safe incremental update. In a production pipeline, the engineer would also add tests, freshness checks, permissions, scheduling, and alerts.</p>
+
+        <aside class="article-callout"><strong>A useful rule:</strong> analysts optimize SQL for insight and communication; engineers optimize SQL for reliability and reuse. Strong data teams need both.</aside>
+
+        <h2>Where the roles overlap</h2>
+        <p>The boundary is not a wall. Analysts often use advanced window functions, query optimization, and data quality checks. Engineers investigate business definitions and work closely with analysts to design useful models. In a small company, one person may do both jobs.</p>
+        <p>The most practical way to learn is to build from the analyst side outward:</p>
+        <ol>
+          <li>Learn <code>SELECT</code>, <code>WHERE</code>, <code>GROUP BY</code>, joins, and aggregates.</li>
+          <li>Practice CTEs and window functions such as <code>ROW_NUMBER</code>, <code>RANK</code>, and <code>LAG</code>.</li>
+          <li>Learn to read a data model and write metrics carefully.</li>
+          <li>Then add engineering concepts: raw vs curated data, incremental loads, deduplication, testing, orchestration, and performance.</li>
+        </ol>
+
+        <h2>Final takeaway</h2>
+        <p>SQL is a shared language across data careers. The difference is less about whether someone can write a join and more about what they are accountable for after the query runs. The analyst asks, “What should we do?” The engineer makes sure the data is ready for that question every day.</p>
+      </article>
+    </main>
+    <footer class="site-footer"><p>&copy; 2026 DataInsideLab. All rights reserved.</p><p><a href="/rss.xml">RSS feed</a></p></footer>
+  </body>
+</html>
