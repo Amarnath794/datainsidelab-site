@@ -6,6 +6,13 @@
     <description>Data, AI, analytics, and technology articles.</description>
     <language>en</language>
     <item>
+      <title>Python vs SQL for data analysts and data engineers</title>
+      <link>https://datainsidelab.com/articles/python-vs-sql-for-analysts-and-data-engineers.html</link>
+      <guid>https://datainsidelab.com/articles/python-vs-sql-for-analysts-and-data-engineers.html</guid>
+      <pubDate>Tue, 10 Nov 2026 00:00:00 +0530</pubDate>
+      <description>A practical guide to choosing SQL, Python, pandas, or PySpark for analysis and data engineering.</description>
+    </item>
+    <item>
       <title>SQL for data analysts vs data engineers: the same language, different job</title>
       <link>https://datainsidelab.com/articles/sql-for-data-analysts-vs-data-engineers.html</link>
       <guid>https://datainsidelab.com/articles/sql-for-data-analysts-vs-data-engineers.html</guid>
